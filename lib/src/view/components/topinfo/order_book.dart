@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:roqqu/src/lib/theme.dart';
 import 'package:roqqu/src/view/components/custom_dropdown.dart';
 import 'package:roqqu/src/view/components/custom_text.dart';
+import 'package:roqqu/src/view/components/order_trade.dart';
 import 'package:roqqu/src/view/components/svg_viewer.dart';
 
 class OrderBook extends StatefulWidget {
@@ -132,7 +133,48 @@ class _OrderBookState extends State<OrderBook> {
             ),
           ],
         ),
-      )
+      ),
+      const OrderTrade(price: 36920.12, amount: 0.758965, bgPercent: 0.7),
+      const OrderTrade(price: 36920.12, amount: 0.758965),
+      const OrderTrade(price: 36920.12, amount: 0.758965, bgPercent: 0.65),
+      const OrderTrade(price: 36920.12, amount: 0.758965),
+      const OrderTrade(price: 36920.12, amount: 0.758965, bgPercent: 0.3),
+      Container(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        alignment: Alignment.center,
+        child: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomText(
+              "36,641.20",
+              color: greenTextColor,
+              size: 22,
+            ),
+            SizedBox(width: 10),
+            SvgViewer(
+              "assets/icon/arrow_up.svg",
+              color: greenTextColor,
+              width: 20,
+              height: 20,
+            ),
+            SizedBox(width: 10),
+            CustomText(
+              "36,641.20",
+              color: Colors.white,
+              size: 22,
+            ),
+          ],
+        ),
+      ),
+      const OrderTrade(
+          price: 36920.12, amount: 0.758965, bgPercent: 0.4, topInfo: false),
+      const OrderTrade(
+          price: 36920.12, amount: 0.758965, bgPercent: 0.55, topInfo: false),
+      const OrderTrade(
+          price: 36920.12, amount: 0.758965, bgPercent: 0.685, topInfo: false),
+      const OrderTrade(price: 36920.12, amount: 0.758965, topInfo: false),
+      const OrderTrade(
+          price: 36920.12, amount: 0.758965, bgPercent: 0.55, topInfo: false),
     ]);
   }
 }
