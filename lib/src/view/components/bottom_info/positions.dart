@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roqqu/src/lib/theme.dart';
-import 'package:roqqu/src/view/components/custom_text.dart';
+import 'package:roqqu/src/view/components/common/custom_text.dart';
 
 class Positions extends StatelessWidget {
   const Positions({super.key});

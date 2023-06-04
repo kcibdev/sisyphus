@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:roqqu/src/view/components/custom_text.dart';
+import 'package:roqqu/src/view/components/common/custom_text.dart';
 
 class RecentTrades extends StatefulWidget {
   const RecentTrades({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roqqu/src/lib/theme.dart';
-import 'package:roqqu/src/view/components/custom_buttons.dart';
+import 'package:roqqu/src/view/components/common/custom_buttons.dart';
 import 'package:roqqu/src/view/components/topinfo/chart.dart';
 import 'package:roqqu/src/view/components/topinfo/order_book.dart';
 import 'package:roqqu/src/view/components/topinfo/recent_trade.dart';

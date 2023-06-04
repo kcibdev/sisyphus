@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roqqu/src/lib/theme.dart';
-import 'package:roqqu/src/view/components/custom_dropdown.dart';
-import 'package:roqqu/src/view/components/custom_text.dart';
+import 'package:roqqu/src/view/components/common/custom_dropdown.dart';
+import 'package:roqqu/src/view/components/common/custom_text.dart';
 import 'package:roqqu/src/view/components/order_trade.dart';
 import 'package:roqqu/src/view/components/svg_viewer.dart';
 
@@ -140,7 +140,7 @@ class _OrderBookState extends State<OrderBook> {
       const OrderTrade(price: 36920.12, amount: 0.758965),
       const OrderTrade(price: 36920.12, amount: 0.758965, bgPercent: 0.3),
       Container(
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         alignment: Alignment.center,
         child: const Row(
           mainAxisSize: MainAxisSize.min,

@@ -4,7 +4,7 @@ import 'package:roqqu/src/view/components/bottom_info/open_order.dart';
 import 'package:roqqu/src/view/components/bottom_info/order_history.dart';
 import 'package:roqqu/src/view/components/bottom_info/positions.dart';
 import 'package:roqqu/src/view/components/bottom_info/trade_history.dart';
-import 'package:roqqu/src/view/components/custom_buttons.dart';
+import 'package:roqqu/src/view/components/common/custom_buttons.dart';
 
 class BottomTab extends StatefulWidget {
   const BottomTab({super.key});

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:roqqu/src/lib/theme.dart';
 
 class SvgViewer extends StatelessWidget {
   final String assetName;
@@ -16,7 +15,8 @@ class SvgViewer extends StatelessWidget {
       assetName,
       width: width,
       height: height,
-      colorFilter: ColorFilter.mode(color ?? textGrayColor, BlendMode.srcIn),
+      colorFilter:
+          color == null ? null : ColorFilter.mode(color!, BlendMode.srcIn),
     );
   }
 }

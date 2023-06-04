@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roqqu/src/lib/theme.dart';
-import 'package:roqqu/src/view/components/custom_text.dart';
+import 'package:roqqu/src/view/components/common/custom_text.dart';
 
 class OrderHistory extends StatelessWidget {
   const OrderHistory({super.key});

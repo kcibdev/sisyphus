@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:roqqu/src/lib/theme.dart';
 import 'package:roqqu/src/utils/number_format.dart';
 import 'package:roqqu/src/view/components/bottom_info/tab.dart';
-import 'package:roqqu/src/view/components/custom_buttons.dart';
-import 'package:roqqu/src/view/components/custom_dropdown.dart';
-import 'package:roqqu/src/view/components/custom_text.dart';
+import 'package:roqqu/src/view/components/common/bottom_sheet.dart';
+import 'package:roqqu/src/view/components/common/custom_buttons.dart';
+import 'package:roqqu/src/view/components/common/custom_dropdown.dart';
+import 'package:roqqu/src/view/components/common/custom_text.dart';
 import 'package:roqqu/src/view/components/hour_change.dart';
 import 'package:roqqu/src/view/components/image_viewer.dart';
 import 'package:roqqu/src/view/components/svg_viewer.dart';
@@ -64,9 +65,10 @@ class IndexPage extends StatelessWidget {
                       physics: const ScrollPhysics(),
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       children: const [
-                        HourChange(),
-                        HourChange(),
-                        HourChange(),
+                        HourChange("Change", type: HourChangeType.CHANGE),
+                        HourChange("High", type: HourChangeType.HIGH),
+                        HourChange("Low", type: HourChangeType.LOW),
+                        HourChange("Volume", type: HourChangeType.VOLUME),
                       ],
                     ),
                   ),
@@ -84,7 +86,7 @@ class IndexPage extends StatelessWidget {
           height: 60,
           color: cardColor,
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          child: const Row(
+          child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -93,14 +95,16 @@ class IndexPage extends StatelessWidget {
                     "Buy",
                     backgroundColor: successColor,
                     height: 40,
+                    tap: () => addAction(context, const BuySell()),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: CustomButton(
                     "Sell",
                     backgroundColor: alertColor,
                     height: 40,
+                    tap: () => addAction(context, const BuySell()),
                   ),
                 ),
               ]),

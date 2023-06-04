@@ -4,9 +4,11 @@ class CustomButton extends StatelessWidget {
   final Function()? tap;
   final String text;
   final Color? backgroundColor;
+  final Color? textColor;
   final double height;
   final double width;
   final double radius;
+  final BoxBorder? border;
 
   const CustomButton(this.text,
       {Key? key,
@@ -14,7 +16,9 @@ class CustomButton extends StatelessWidget {
       this.height = 47,
       this.width = double.infinity,
       this.radius = 5,
-      this.backgroundColor})
+      this.backgroundColor,
+      this.border,
+      this.textColor})
       : super(key: key);
 
   @override
@@ -32,15 +36,16 @@ class CustomButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(radius),
+          border: border,
         ),
         alignment: Alignment.center,
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w500,
-            color: Colors.white,
+            color: textColor ?? Colors.white,
           ),
         ),
       ),
