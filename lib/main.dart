@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:roqqu/src/lib/theme.dart';
 import 'package:roqqu/src/view/page/home/index.dart';
 
 void main() {
@@ -15,9 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sisyphus',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
+      theme: ThemeData.dark(
         useMaterial3: true,
-        scaffoldBackgroundColor: bgColor,
       ),
       home: const IndexPage(),
     );

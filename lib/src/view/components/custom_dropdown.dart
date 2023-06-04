@@ -83,3 +83,56 @@ class _CustomDropdownState extends State<CustomDropdown> {
     );
   }
 }
+
+class CustomNumberDropdown extends StatefulWidget {
+  const CustomNumberDropdown({super.key});
+
+  @override
+  State<CustomNumberDropdown> createState() => _CustomNumberDropdownState();
+}
+
+class _CustomNumberDropdownState extends State<CustomNumberDropdown> {
+  String? selectedWidget;
+  List<int> intList = List.generate(100, (index) => index + 1);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: selectedWidget,
+          dropdownColor: cardColor,
+          hint: const CustomText(
+            "10",
+            size: 18,
+            color: Colors.white,
+          ),
+          icon: const Icon(
+            Icons.keyboard_arrow_down,
+            color: Colors.white,
+          ),
+          onChanged: (newValue) {
+            setState(() {
+              selectedWidget = newValue;
+            });
+          },
+          items: intList.map((int widget) {
+            return DropdownMenuItem<String>(
+              value: widget.toString(),
+              child: CustomText(
+                widget.toString(),
+                size: 18,
+                color: Colors.white,
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}

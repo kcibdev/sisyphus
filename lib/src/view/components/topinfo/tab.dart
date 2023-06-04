@@ -30,12 +30,12 @@ class _TopInfoState extends State<TopInfo> {
           // Tab bar container
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10),
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(3),
             height: 50,
             decoration: BoxDecoration(
-              color: const Color(0xFF262932),
-              borderRadius: BorderRadius.circular(5),
-            ),
+                color: const Color(0xFF262932),
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: grayBg)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -43,27 +43,24 @@ class _TopInfoState extends State<TopInfo> {
                   child: CustomButton(
                     "Charts",
                     tap: () => selectTab(0),
-                    backgroundColor: selectedTab == 0
-                        ? const Color.fromRGBO(233, 240, 255, 0.05)
-                        : const Color(0xFF262932),
+                    backgroundColor:
+                        selectedTab == 0 ? grayBg : const Color(0xFF262932),
                   ),
                 ),
                 Expanded(
                   child: CustomButton(
                     "OrderBook",
                     tap: () => selectTab(1),
-                    backgroundColor: selectedTab == 1
-                        ? const Color.fromRGBO(233, 240, 255, 0.05)
-                        : const Color(0xFF262932),
+                    backgroundColor:
+                        selectedTab == 1 ? grayBg : const Color(0xFF262932),
                   ),
                 ),
                 Expanded(
                   child: CustomButton(
                     "Recent Trades",
                     tap: () => selectTab(2),
-                    backgroundColor: selectedTab == 2
-                        ? const Color.fromRGBO(233, 240, 255, 0.05)
-                        : const Color(0xFF262932),
+                    backgroundColor:
+                        selectedTab == 2 ? grayBg : const Color(0xFF262932),
                   ),
                 ),
               ],

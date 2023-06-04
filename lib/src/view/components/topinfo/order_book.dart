@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:roqqu/src/lib/theme.dart';
+import 'package:roqqu/src/view/components/custom_dropdown.dart';
 import 'package:roqqu/src/view/components/custom_text.dart';
+import 'package:roqqu/src/view/components/svg_viewer.dart';
 
 class OrderBook extends StatefulWidget {
   const OrderBook({super.key});
@@ -9,8 +12,127 @@ class OrderBook extends StatefulWidget {
 }
 
 class _OrderBookState extends State<OrderBook> {
+  int selectedMenu = 0;
+
+  void selectMenu(int index) {
+    setState(() {
+      selectedMenu = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder(child: CustomText("Order book"));
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                InkWell(
+                  onTap: () => selectMenu(0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: selectedMenu == 0 ? cardColor : Colors.transparent,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    width: 40,
+                    height: 40,
+                    padding: const EdgeInsets.all(10),
+                    child: const SvgViewer("assets/icon/order_left_menu.svg",
+                        width: 20, height: 20),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                InkWell(
+                  onTap: () => selectMenu(1),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: selectedMenu == 1 ? cardColor : Colors.transparent,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    width: 40,
+                    height: 40,
+                    padding: const EdgeInsets.all(10),
+                    child: const SvgViewer("assets/icon/order_center_menu.svg",
+                        width: 20, height: 20),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                InkWell(
+                  onTap: () => selectMenu(2),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: selectedMenu == 2 ? cardColor : Colors.transparent,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    width: 40,
+                    height: 40,
+                    padding: const EdgeInsets.all(10),
+                    child: const SvgViewer("assets/icon/order_right_menu.svg",
+                        width: 20, height: 20),
+                  ),
+                ),
+              ],
+            ),
+            const CustomNumberDropdown(),
+          ],
+        ),
+      ),
+      Container(
+        margin: const EdgeInsets.symmetric(vertical: 15),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                CustomText(
+                  "Price",
+                  weight: FontWeight.w500,
+                ),
+                SizedBox(height: 3),
+                CustomText(
+                  "(USDT)",
+                  size: 14,
+                  weight: FontWeight.w500,
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                CustomText(
+                  "Amount",
+                  weight: FontWeight.w500,
+                ),
+                SizedBox(height: 3),
+                CustomText(
+                  "(BTC)",
+                  size: 14,
+                  weight: FontWeight.w500,
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                CustomText(
+                  "Total",
+                  weight: FontWeight.w500,
+                ),
+                SizedBox(height: 3),
+                CustomText(
+                  "",
+                  size: 14,
+                  weight: FontWeight.w500,
+                ),
+              ],
+            ),
+          ],
+        ),
+      )
+    ]);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roqqu/src/lib/theme.dart';
 import 'package:roqqu/src/utils/number_format.dart';
+import 'package:roqqu/src/view/components/bottom_info/tab.dart';
 import 'package:roqqu/src/view/components/custom_buttons.dart';
 import 'package:roqqu/src/view/components/custom_dropdown.dart';
 import 'package:roqqu/src/view/components/custom_text.dart';
@@ -71,7 +72,8 @@ class IndexPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   // Top Info
-                  const TopInfo()
+                  const TopInfo(),
+                  const BottomTab()
                 ]),
               )
             ],
