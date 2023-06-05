@@ -43,12 +43,15 @@ class _HourChangeState extends State<HourChange> {
                   HourChangeType.LOW => "assets/icon/arrow_down.svg",
                   HourChangeType.VOLUME => "assets/icon/volume.svg",
                 },
-                width: 17,
-                height: 17,
+                width: 15,
+                height: 15,
                 color: textGrayColor,
               ),
             const SizedBox(width: 5),
-            CustomText("24h ${widget.title}"),
+            CustomText(
+              "24h ${widget.title}",
+              size: 14,
+            ),
           ],
         ),
         const SizedBox(height: 10),
@@ -57,6 +60,7 @@ class _HourChangeState extends State<HourChange> {
             CustomText(
               "520.80",
               size: 20,
+              weight: FontWeight.w600,
               color: widget.type == HourChangeType.CHANGE
                   ? greenTextColor
                   : Colors.white,
@@ -65,6 +69,7 @@ class _HourChangeState extends State<HourChange> {
             CustomText(
               "+1.25%",
               size: 20,
+              weight: FontWeight.w600,
               color: widget.type == HourChangeType.CHANGE
                   ? greenTextColor
                   : Colors.white,

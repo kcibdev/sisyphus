@@ -11,6 +11,12 @@ class RecentTrades extends StatefulWidget {
 class _RecentTradesState extends State<RecentTrades> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder(child: CustomText("Recent trade"));
+    return Container(
+        height: 200,
+        alignment: Alignment.center,
+        child: const CustomText(
+          "Recent trade",
+          size: 18,
+        ));
   }
 }

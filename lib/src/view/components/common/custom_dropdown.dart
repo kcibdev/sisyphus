@@ -15,17 +15,17 @@ class _CustomDropdownState extends State<CustomDropdown> {
   List<Map<String, dynamic>> widgetList = [
     {
       "icon": 'assets/icon/btc.svg',
-      "title": "BTCUSDT",
+      "title": "BTC/USDT",
       "id": "BTC",
     },
     {
       "icon": 'assets/icon/btc.svg',
-      "title": "ETHUSDT",
+      "title": "ETH/USDT",
       "id": "ETH",
     },
     {
       "icon": 'assets/icon/btc.svg',
-      "title": "BNBUSDT",
+      "title": "BNB/USDT",
       "id": "BNB",
     }
   ];
@@ -44,7 +44,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
             ),
             SizedBox(width: 10),
             CustomText(
-              'BTCUSDT',
+              'BTC/USDT',
               size: 20,
               color: Colors.white,
               weight: FontWeight.w400,

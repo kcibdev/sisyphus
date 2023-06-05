@@ -90,6 +90,7 @@ class InputDropdownField extends StatelessWidget {
               items: const ["Good till cancelled"],
               selectedItem: "Good till cancelled",
               size: 15,
+              isButtonColor: false,
               color: textGrayColor,
               onSelect: (value) => {},
             )

@@ -24,14 +24,48 @@ class IndexPage extends StatelessWidget {
           shadowColor: Colors.grey[400],
           backgroundColor: const Color(0xFF1C2127),
           title: const SvgViewer("assets/image/logo.svg"),
-          actions: const [
-            ImageViewer("assets/image/avatar.png",
+          actions: [
+            const ImageViewer("assets/image/avatar.png",
                 width: 30, height: 30, radius: 50),
-            SizedBox(width: 15),
-            SvgViewer("assets/icon/world.svg", width: 30, height: 30),
-            SizedBox(width: 15),
-            SvgViewer("assets/icon/menu.svg", width: 25, height: 23),
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
+            const SvgViewer("assets/icon/world.svg", width: 30, height: 30),
+            const SizedBox(width: 15),
+            GestureDetector(
+                onTap: () {
+                  showMenu(
+                    context: context,
+                    position: RelativeRect.fromLTRB(
+                      MediaQuery.of(context).size.width,
+                      kToolbarHeight + 40,
+                      0.0,
+                      0.0,
+                    ),
+                    color: cardColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    items: [
+                      const PopupMenuItem(
+                        value: 'Exchange',
+                        child: Text('Exchange'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'Wallets',
+                        child: Text('Wallets'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'Roqqu Hub',
+                        child: Text('Roqqu Hub'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'Logout',
+                        child: Text('Logout'),
+                      ),
+                    ],
+                  ).then((value) {});
+                },
+                child: const SvgViewer("assets/icon/menu.svg",
+                    width: 22, height: 22)),
+            const SizedBox(width: 15),
           ],
         ),
         body: SingleChildScrollView(
