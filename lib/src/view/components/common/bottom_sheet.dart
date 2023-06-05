@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:roqqu/src/lib/theme.dart';
 import 'package:roqqu/src/view/components/common/custom_buttons.dart';
+import 'package:roqqu/src/view/components/common/custom_checkbox.dart';
+import 'package:roqqu/src/view/components/common/custom_dropdown.dart';
+import 'package:roqqu/src/view/components/common/custom_text.dart';
 import 'package:roqqu/src/view/components/common/input.dart';
 
 class BuySell extends StatefulWidget {
@@ -11,12 +14,26 @@ class BuySell extends StatefulWidget {
 }
 
 class _BuySellState extends State<BuySell> {
+  bool _checked = false;
+  final double _total = 0.00;
+  String selectedCurrency = "NGN";
+  List<String> fiatCurrencies = [
+    'NGN',
+    'USD',
+    'EUR',
+    'JPY',
+    'GBP',
+    'CHF',
+    'CAD',
+    'AUD',
+    'NZD',
+    'HK)'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return ListView(
-      shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      physics: const NeverScrollableScrollPhysics(),
       children: [
         Container(
           padding: const EdgeInsets.all(3),
@@ -76,13 +93,106 @@ class _BuySellState extends State<BuySell> {
         const SizedBox(height: 15),
         const InputField(),
         const SizedBox(height: 15),
-        const InputField(),
+        const InputDropdownField(),
         const SizedBox(height: 15),
-        const CustomButton(
-          "Buy BTC",
-          radius: 10,
-          backgroundColor: greenTextColor,
+        CustomCheckbox(
+            title: "Post",
+            value: _checked,
+            onChanged: (check) => setState(() => _checked = check)),
+        const SizedBox(height: 15),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [const CustomText("Total"), CustomText("$_total")],
         ),
+        const SizedBox(height: 15),
+        const CustomButton("Buy BTC",
+            radius: 10,
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              stops: [0.0, 0.4792, 0.9635],
+              colors: [
+                Color(0xFF483BEB),
+                Color(0xFF7847E1),
+                Color(0xFFDD568D),
+              ],
+            )),
+        const SizedBox(height: 15),
+        Container(
+            width: double.infinity, height: 1, color: const Color(0xFF394047)),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  "Total account value",
+                  size: 14,
+                ),
+                SizedBox(height: 5),
+                CustomText(
+                  "0.00",
+                  color: Colors.white,
+                ),
+              ],
+            ),
+            CustomListDropdown(
+              selectedItem: selectedCurrency,
+              items: fiatCurrencies,
+              isButtonColor: false,
+              color: textGrayColor,
+              onSelect: (value) => setState(() => selectedCurrency = value),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  "Open Orders",
+                  size: 14,
+                ),
+                SizedBox(height: 5),
+                CustomText(
+                  "0.00",
+                  color: Colors.white,
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  "Available",
+                  size: 14,
+                ),
+                SizedBox(height: 5),
+                CustomText(
+                  "0.00",
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        SizedBox(
+          width: 80,
+          child: CustomButton(
+            "Deposit",
+            width: 80,
+            backgroundColor: const Color(0xFF2764FF),
+            radius: 10,
+            tap: () {},
+          ),
+        ),
+        const SizedBox(height: 30),
       ],
     );
   }
@@ -101,22 +211,10 @@ addAction(BuildContext context, Widget child) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return Container(
+              padding: const EdgeInsets.only(top: 20),
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height / 1.3),
-              child: Column(
-                children: [
-                  Container(
-                    height: 5,
-                    width: 40,
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey[300]),
-                  ),
-                  Expanded(child: child),
-                ],
-              ));
+                  maxHeight: MediaQuery.of(context).size.height / 1.15),
+              child: child);
         });
       });
 }

@@ -6,7 +6,6 @@ class CustomText extends StatelessWidget {
   final Color? color;
   final FontWeight weight;
   final TextAlign align;
-  final String font;
   final TextOverflow? overflow;
   final int? max;
   final bool? wrap;
@@ -20,7 +19,6 @@ class CustomText extends StatelessWidget {
       this.color,
       this.weight = FontWeight.w500,
       this.align = TextAlign.left,
-      this.font = "Satoshi",
       this.overflow,
       this.wrap,
       this.max,
@@ -42,7 +40,7 @@ class CustomText extends StatelessWidget {
         height: height,
         color: color ?? const Color(0xFFA7B1BC),
         fontWeight: weight,
-        fontFamily: font,
+        fontFamily: "Satoshi",
         wordSpacing: space,
       ),
     );

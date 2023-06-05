@@ -84,50 +84,51 @@ class _CustomDropdownState extends State<CustomDropdown> {
   }
 }
 
-class CustomNumberDropdown extends StatefulWidget {
-  const CustomNumberDropdown({super.key});
-
-  @override
-  State<CustomNumberDropdown> createState() => _CustomNumberDropdownState();
-}
-
-class _CustomNumberDropdownState extends State<CustomNumberDropdown> {
-  String? selectedWidget;
-  List<int> intList = List.generate(100, (index) => index + 1);
+class CustomListDropdown extends StatelessWidget {
+  final List items;
+  final String selectedItem;
+  final Function(String selected) onSelect;
+  final bool isButtonColor;
+  final Color? color;
+  final double size;
+  const CustomListDropdown(
+      {super.key,
+      required this.items,
+      this.isButtonColor = true,
+      required this.selectedItem,
+      required this.onSelect,
+      this.color,
+      this.size = 18});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: cardColor,
+        color: isButtonColor ? cardColor : null,
         borderRadius: BorderRadius.circular(5),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: selectedWidget,
+          value: selectedItem,
           dropdownColor: cardColor,
-          hint: const CustomText(
-            "10",
-            size: 18,
-            color: Colors.white,
+          hint: CustomText(
+            selectedItem.toString(),
+            size: size,
+            color: color ?? Colors.white,
           ),
-          icon: const Icon(
+          icon: Icon(
             Icons.keyboard_arrow_down,
-            color: Colors.white,
+            color: color ?? Colors.white,
           ),
-          onChanged: (newValue) {
-            setState(() {
-              selectedWidget = newValue;
-            });
-          },
-          items: intList.map((int widget) {
+          onChanged: (newValue) => onSelect(newValue!),
+          items: items.map((dynamic widget) {
             return DropdownMenuItem<String>(
               value: widget.toString(),
               child: CustomText(
                 widget.toString(),
-                size: 18,
-                color: Colors.white,
+                size: size,
+                color: color ?? Colors.white,
               ),
             );
           }).toList(),

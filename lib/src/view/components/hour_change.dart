@@ -3,6 +3,7 @@ import 'package:roqqu/src/lib/theme.dart';
 import 'package:roqqu/src/view/components/common/custom_text.dart';
 import 'package:roqqu/src/view/components/svg_viewer.dart';
 
+// ignore: constant_identifier_names
 enum HourChangeType { CHANGE, HIGH, LOW, VOLUME }
 
 class HourChange extends StatefulWidget {

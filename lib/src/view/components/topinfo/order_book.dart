@@ -14,6 +14,8 @@ class OrderBook extends StatefulWidget {
 
 class _OrderBookState extends State<OrderBook> {
   int selectedMenu = 0;
+  String selectedNumber = "10";
+  List<int> intList = List.generate(100, (index) => index + 1);
 
   void selectMenu(int index) {
     setState(() {
@@ -77,7 +79,11 @@ class _OrderBookState extends State<OrderBook> {
                 ),
               ],
             ),
-            const CustomNumberDropdown(),
+            CustomListDropdown(
+              selectedItem: selectedNumber,
+              items: intList,
+              onSelect: (value) => setState(() => selectedNumber = value),
+            ),
           ],
         ),
       ),
