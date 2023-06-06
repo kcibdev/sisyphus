@@ -35,7 +35,7 @@ class CustomButton extends StatelessWidget {
           height: height,
           width: width ?? double.infinity,
           constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
+            maxWidth: width ?? MediaQuery.of(context).size.width,
           ),
           decoration: BoxDecoration(
             color: backgroundColor,
