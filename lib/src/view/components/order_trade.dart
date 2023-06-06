@@ -62,7 +62,7 @@ class OrderTrade extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               CustomText(
-                (price + amount).toStringAsFixed(2),
+                (price * amount).toStringAsFixed(2),
                 weight: FontWeight.w500,
                 color: Colors.white,
               ),

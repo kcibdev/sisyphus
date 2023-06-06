@@ -4,7 +4,9 @@ import 'package:roqqu/src/view/components/common/custom_dropdown.dart';
 import 'package:roqqu/src/view/components/common/custom_text.dart';
 
 class InputField extends StatelessWidget {
-  const InputField({super.key});
+  final String title;
+  final TextEditingController? controller;
+  const InputField({super.key, required this.title, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +21,12 @@ class InputField extends StatelessWidget {
       child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         GestureDetector(
           onTap: () => node.requestFocus(),
-          child: const Row(
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomText("Limit Price"),
-              SizedBox(width: 10),
-              Icon(
+              CustomText(title),
+              const SizedBox(width: 10),
+              const Icon(
                 Icons.info_outline_rounded,
                 color: textGrayColor,
                 size: 17,
@@ -35,6 +37,7 @@ class InputField extends StatelessWidget {
         Expanded(
           child: TextFormField(
             textAlign: TextAlign.right,
+            controller: controller,
             textAlignVertical: TextAlignVertical.center,
             focusNode: node,
             keyboardType: TextInputType.number,

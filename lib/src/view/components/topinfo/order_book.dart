@@ -38,12 +38,6 @@ class _OrderBookState extends State<OrderBook>
     fetchOrderBook();
   }
 
-  @override
-  void dispose() {
-    channel.sink.close();
-    super.dispose();
-  }
-
   void fetchOrderBook() async {
     channel.sink.add(
         '{"method":"depth","params":{"symbol": "BTCUSDT","limit": 5},"id":"51e2affb-0aba-4821-ba75-f2625006eb43"}');

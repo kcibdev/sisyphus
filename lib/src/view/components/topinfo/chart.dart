@@ -18,13 +18,13 @@ class _CandlestickChartState extends State<CandlestickChart>
     with AutomaticKeepAliveClientMixin<CandlestickChart> {
   //The data gotten from this uri has almost the same value for the high, low, close etc make it look like a block on the candlestick chart
   final channel = WebSocketChannel.connect(
-    Uri.parse('wss://stream.binance.com:9443/ws/btcusdt@kline_1m'),
+    // Uri.parse('wss://stream.binance.com:9443/ws/btcusdt@kline_1m'),
     // Uri.parse('wss://testnet.binance.vision/ws-api/v3'),
-    // Uri.parse('wss://ws-api.binance.com:9443/ws-api/v3'),
+    Uri.parse('wss://ws-api.binance.com:9443/ws-api/v3'),
   );
 
   List<Candle> data = [];
-  String selectedTime = "4H";
+  String selectedTime = "1d";
 
   @override
   void initState() {
@@ -32,35 +32,41 @@ class _CandlestickChartState extends State<CandlestickChart>
     getCandlestickDataStream();
   }
 
-  @override
-  void dispose() {
-    channel.sink.close();
-    super.dispose();
-  }
+  void getCandlestickDataStream() {
+    channel.sink.add(
+        '{"method":"klines","params":{"symbol": "BTCUSDT","interval": "$selectedTime","startTime": 1655969280000, "limit": ${data.length > 1 ? 1 : 100}},"id":"1dbbeb56-8eea-466a-8f6e-86bdcfa2fc0b"}');
 
-  void getCandlestickDataStream() async {
     channel.stream.listen((event) {
-      Candle incomingData = parseCandlestickData(event);
-      if (data.length < 13) {
-        //Adding dummy data firstly cause the candlestick package require atleast 13 items
-        List<Candle> candle = List.generate(
-            13,
-            (index) => Candle(
-                close: 25694.23000000,
-                high: 25694.23000000,
-                low: 25688.66000000,
-                volume: 19.45139000,
-                date: DateTime.fromMillisecondsSinceEpoch(1686051000000),
-                open: 25691.37000000));
+      final newData = jsonDecode(event);
 
-        candle.add(incomingData);
+      if (newData['result'].length > 1) {
+        List<Candle> streamData = (newData['result'] as List).map((klineData) {
+          int timestamp = klineData[0];
+          double open = double.parse(klineData[1]);
+          double high = double.parse(klineData[2]);
+          double low = double.parse(klineData[3]);
+          double close = double.parse(klineData[4]);
+          double volume = double.parse(klineData[5]);
+
+          return Candle(
+            open: open,
+            high: high,
+            low: low,
+            close: close,
+            volume: volume,
+            date: DateTime.fromMillisecondsSinceEpoch(timestamp),
+          );
+        }).toList();
+
+        // print(streamData.length);
 
         setState(() {
-          data.addAll(candle);
+          data.addAll(streamData);
         });
       } else {
+        Candle incomingData = parseCandlestickData(event);
         setState(() {
-          data.insert(0, incomingData);
+          data.add(incomingData);
         });
       }
     });
@@ -89,7 +95,8 @@ class _CandlestickChartState extends State<CandlestickChart>
                   Row(
                     children: ["1H", "2H", "4H", "1D", "1W", "1M"]
                         .map((e) => GestureDetector(
-                              onTap: () => setState(() => selectedTime = e),
+                              onTap: () => setState(
+                                  () => selectedTime = e.toLowerCase()),
                               child: Container(
                                   margin: const EdgeInsets.only(right: 10),
                                   padding: const EdgeInsets.symmetric(
@@ -98,7 +105,7 @@ class _CandlestickChartState extends State<CandlestickChart>
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: selectedTime == e
+                                    color: selectedTime == e.toLowerCase()
                                         ? secondaryColor
                                         : Colors.transparent,
                                   ),
@@ -190,22 +197,34 @@ class _CandlestickChartState extends State<CandlestickChart>
 
   Candle parseCandlestickData(String data) {
     Map<String, dynamic> json = jsonDecode(data);
-    int timestamp = json['k']['t'];
-    double open = double.parse(json['k']['o']);
-    double high = double.parse(json['k']['h']);
-    double low = double.parse(json['k']['l']);
-    double close = double.parse(json['k']['c']);
-    double volume = double.parse(json['k']['v']);
+    List<dynamic> result = json['result'];
 
-    Candle candle = Candle(
-      open: open,
-      high: high,
-      low: low,
-      close: close,
-      volume: volume,
-      date: DateTime.fromMillisecondsSinceEpoch(timestamp),
-    );
+    if (result.isNotEmpty) {
+      List<dynamic> klineData = result[0];
 
-    return candle;
+      if (klineData.length >= 11) {
+        int timestamp = klineData[0];
+        double open = double.parse(klineData[1]);
+        double high = double.parse(klineData[2]);
+        double low = double.parse(klineData[3]);
+        double close = double.parse(klineData[4]);
+        double volume = double.parse(klineData[5]);
+
+        Candle candle = Candle(
+          open: open,
+          high: high,
+          low: low,
+          close: close,
+          volume: volume,
+          date: DateTime.fromMillisecondsSinceEpoch(timestamp),
+        );
+
+        return candle;
+      } else {
+        throw const FormatException('Invalid kline data');
+      }
+    } else {
+      throw const FormatException('Empty result array');
+    }
   }
 }

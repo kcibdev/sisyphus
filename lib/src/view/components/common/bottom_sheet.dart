@@ -32,168 +32,174 @@ class _BuySellState extends State<BuySell> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      children: [
-        Container(
-          padding: const EdgeInsets.all(3),
-          height: 50,
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(0, 0, 0, 0.16),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: CustomButton(
-                  "Buy",
-                  backgroundColor: grayBg,
-                  border: Border.all(color: greenTextColor, width: 2),
-                  radius: 10,
-                ),
-              ),
-              const Expanded(
-                child:
-                    CustomButton("Sell", backgroundColor: Colors.transparent),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 15),
-        Container(
-          padding: const EdgeInsets.all(3),
-          height: 45,
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomButton(
-                "Limit",
-                backgroundColor: Color(0xFF353945),
-                width: 100,
-                radius: 20,
-              ),
-              CustomButton(
-                "Market",
-                backgroundColor: Colors.transparent,
-                textColor: textGrayColor,
-                width: 100,
-              ),
-              CustomButton(
-                "Stop-Limit",
-                backgroundColor: Colors.transparent,
-                textColor: textGrayColor,
-                width: 100,
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 15),
-        const InputField(),
-        const SizedBox(height: 15),
-        const InputField(),
-        const SizedBox(height: 15),
-        const InputDropdownField(),
-        const SizedBox(height: 15),
-        CustomCheckbox(
-            title: "Post",
-            value: _checked,
-            onChanged: (check) => setState(() => _checked = check)),
-        const SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [const CustomText("Total"), CustomText("$_total")],
-        ),
-        const SizedBox(height: 15),
-        const CustomButton("Buy BTC",
-            radius: 10,
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              stops: [0.0, 0.4792, 0.9635],
-              colors: [
-                Color(0xFF483BEB),
-                Color(0xFF7847E1),
-                Color(0xFFDD568D),
-              ],
-            )),
-        const SizedBox(height: 15),
-        Container(
-            width: double.infinity, height: 1, color: const Color(0xFF394047)),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
           children: [
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Container(
+              padding: const EdgeInsets.all(3),
+              height: 50,
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(0, 0, 0, 0.16),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      "Buy",
+                      backgroundColor: grayBg,
+                      border: Border.all(color: greenTextColor, width: 2),
+                      radius: 10,
+                    ),
+                  ),
+                  const Expanded(
+                    child: CustomButton("Sell",
+                        backgroundColor: Colors.transparent),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 15),
+            Container(
+              padding: const EdgeInsets.all(3),
+              height: 45,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomButton(
+                    "Limit",
+                    backgroundColor: Color(0xFF353945),
+                    width: 100,
+                    radius: 20,
+                  ),
+                  CustomButton(
+                    "Market",
+                    backgroundColor: Colors.transparent,
+                    textColor: textGrayColor,
+                    width: 100,
+                  ),
+                  CustomButton(
+                    "Stop-Limit",
+                    backgroundColor: Colors.transparent,
+                    textColor: textGrayColor,
+                    width: 100,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 15),
+            const InputField(title: "Limit Price"),
+            const SizedBox(height: 15),
+            const InputField(title: "Amount"),
+            const SizedBox(height: 15),
+            const InputDropdownField(),
+            const SizedBox(height: 15),
+            CustomCheckbox(
+                title: "Post",
+                value: _checked,
+                onChanged: (check) => setState(() => _checked = check)),
+            const SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [const CustomText("Total"), CustomText("$_total")],
+            ),
+            const SizedBox(height: 15),
+            const CustomButton("Buy BTC",
+                radius: 10,
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  stops: [0.0, 0.4792, 0.9635],
+                  colors: [
+                    Color(0xFF483BEB),
+                    Color(0xFF7847E1),
+                    Color(0xFFDD568D),
+                  ],
+                )),
+            const SizedBox(height: 15),
+            Container(
+                width: double.infinity,
+                height: 1,
+                color: const Color(0xFF394047)),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(
-                  "Total account value",
-                  size: 14,
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      "Total account value",
+                      size: 14,
+                    ),
+                    SizedBox(height: 5),
+                    CustomText(
+                      "0.00",
+                      color: Colors.white,
+                    ),
+                  ],
                 ),
-                SizedBox(height: 5),
-                CustomText(
-                  "0.00",
-                  color: Colors.white,
+                CustomListDropdown(
+                  selectedItem: selectedCurrency,
+                  items: fiatCurrencies,
+                  isButtonColor: false,
+                  color: textGrayColor,
+                  onSelect: (value) => setState(() => selectedCurrency = value),
                 ),
               ],
             ),
-            CustomListDropdown(
-              selectedItem: selectedCurrency,
-              items: fiatCurrencies,
-              isButtonColor: false,
-              color: textGrayColor,
-              onSelect: (value) => setState(() => selectedCurrency = value),
+            const SizedBox(height: 20),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      "Open Orders",
+                      size: 14,
+                    ),
+                    SizedBox(height: 5),
+                    CustomText(
+                      "0.00",
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      "Available",
+                      size: 14,
+                    ),
+                    SizedBox(height: 5),
+                    CustomText(
+                      "0.00",
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ],
             ),
+            const SizedBox(height: 20),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: CustomButton(
+                "Deposit",
+                width: 90,
+                backgroundColor: const Color(0xFF2764FF),
+                radius: 10,
+                tap: () {},
+              ),
+            ),
+            const SizedBox(height: 30),
           ],
         ),
-        const SizedBox(height: 20),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                  "Open Orders",
-                  size: 14,
-                ),
-                SizedBox(height: 5),
-                CustomText(
-                  "0.00",
-                  color: Colors.white,
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                  "Available",
-                  size: 14,
-                ),
-                SizedBox(height: 5),
-                CustomText(
-                  "0.00",
-                  color: Colors.white,
-                ),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        SizedBox(
-          width: 80,
-          child: CustomButton(
-            "Deposit",
-            width: 80,
-            backgroundColor: const Color(0xFF2764FF),
-            radius: 10,
-            tap: () {},
-          ),
-        ),
-        const SizedBox(height: 30),
-      ],
+      ),
     );
   }
 }
