@@ -16,10 +16,11 @@ class CandlestickChart extends StatefulWidget {
 
 class _CandlestickChartState extends State<CandlestickChart>
     with AutomaticKeepAliveClientMixin<CandlestickChart> {
+  //The data gotten from this uri has almost the same value for the high, low, close etc make it look like a block on the candlestick chart
   final channel = WebSocketChannel.connect(
-    // Uri.parse('wss://stream.binance.com:9443/ws/btcusdt@kline_1m'),
+    Uri.parse('wss://stream.binance.com:9443/ws/btcusdt@kline_1m'),
     // Uri.parse('wss://testnet.binance.vision/ws-api/v3'),
-    Uri.parse('wss://ws-api.binance.com:9443/ws-api/v3'),
+    // Uri.parse('wss://ws-api.binance.com:9443/ws-api/v3'),
   );
 
   List<Candle> data = [];
@@ -28,7 +29,7 @@ class _CandlestickChartState extends State<CandlestickChart>
   @override
   void initState() {
     super.initState();
-    fetchListenToStream();
+    getCandlestickDataStream();
   }
 
   @override
@@ -37,41 +38,29 @@ class _CandlestickChartState extends State<CandlestickChart>
     super.dispose();
   }
 
-  fetchListenToStream() async {
-    channel.sink.add(
-        '{"method":"klines","params":{"symbol": "BTCUSDT","interval": "12h","startTime": 1655969280000, "limit": ${data.length > 1 ? 1 : 40}},"id":"1dbbeb56-8eea-466a-8f6e-86bdcfa2fc0b"}');
-    channel.stream.listen((event) async {
-      // print(event);
-      final newData = jsonDecode(event);
+  void getCandlestickDataStream() async {
+    channel.stream.listen((event) {
+      Candle incomingData = parseCandlestickData(event);
+      if (data.length < 13) {
+        //Adding dummy data firstly cause the candlestick package require atleast 13 items
+        List<Candle> candle = List.generate(
+            13,
+            (index) => Candle(
+                close: 25694.23000000,
+                high: 25694.23000000,
+                low: 25688.66000000,
+                volume: 19.45139000,
+                date: DateTime.fromMillisecondsSinceEpoch(1686051000000),
+                open: 25691.37000000));
 
-      if (newData['result'].length > 1) {
-        List<Candle> streamData = (newData['result'] as List).map((klineData) {
-          int timestamp = klineData[0];
-          double open = double.parse(klineData[1]);
-          double high = double.parse(klineData[2]);
-          double low = double.parse(klineData[3]);
-          double close = double.parse(klineData[4]);
-          double volume = double.parse(klineData[5]);
-
-          return Candle(
-            open: open,
-            high: high,
-            low: low,
-            close: close,
-            volume: volume,
-            date: DateTime.fromMillisecondsSinceEpoch(timestamp),
-          );
-        }).toList();
-
-        // print(streamData.length);
+        candle.add(incomingData);
 
         setState(() {
-          data.addAll(streamData);
+          data.addAll(candle);
         });
       } else {
-        Candle incomingData = parseCandlestickData(event);
         setState(() {
-          data.add(incomingData);
+          data.insert(0, incomingData);
         });
       }
     });
@@ -83,154 +72,140 @@ class _CandlestickChartState extends State<CandlestickChart>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-      // color: cardColor,
-      child: Column(children: [
-        // Time change
+    return Column(children: [
+      // Time change
 
-        SizedBox(
-          height: 50,
-          child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const CustomText("Time"),
-                    const SizedBox(width: 10),
-                    Row(
-                      children: ["1H", "2H", "4H", "1D", "1W", "1M"]
-                          .map((e) => Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 3,
-                                horizontal: 7,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: selectedTime == e
-                                    ? secondaryColor
-                                    : Colors.transparent,
-                              ),
-                              child: CustomText(e)))
-                          .toList(),
-                    ),
-                    const SizedBox(width: 10),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: const BoxDecoration(
-                        border: Border.symmetric(
-                          vertical: BorderSide(
-                            color: Color(0xFF394047),
-                          ),
+      SizedBox(
+        height: 50,
+        child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const CustomText("Time"),
+                  const SizedBox(width: 10),
+                  Row(
+                    children: ["1H", "2H", "4H", "1D", "1W", "1M"]
+                        .map((e) => GestureDetector(
+                              onTap: () => setState(() => selectedTime = e),
+                              child: Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 3,
+                                    horizontal: 7,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: selectedTime == e
+                                        ? secondaryColor
+                                        : Colors.transparent,
+                                  ),
+                                  child: CustomText(e)),
+                            ))
+                        .toList(),
+                  ),
+                  const SizedBox(width: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    decoration: const BoxDecoration(
+                      border: Border.symmetric(
+                        vertical: BorderSide(
+                          color: Color(0xFF394047),
                         ),
                       ),
-                      child: const SvgViewer(
-                        "assets/icon/chart.svg",
-                        width: 22,
-                        height: 22,
-                      ),
                     ),
-                    const SizedBox(width: 10),
-                    const CustomText("Fx Indicators"),
-                    const SizedBox(width: 10),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: const BoxDecoration(
-                        border: Border.symmetric(
-                          vertical: BorderSide(
-                            color: Color(0xFF394047),
-                          ),
+                    child: const SvgViewer(
+                      "assets/icon/chart.svg",
+                      width: 22,
+                      height: 22,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  const CustomText("Fx Indicators"),
+                  const SizedBox(width: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    decoration: const BoxDecoration(
+                      border: Border.symmetric(
+                        vertical: BorderSide(
+                          color: Color(0xFF394047),
                         ),
                       ),
-                      child: const Row(
-                        children: [
-                          SvgViewer(
-                            "assets/icon/undo.svg",
-                            width: 22,
-                            height: 22,
-                          ),
-                          SizedBox(width: 10),
-                          SvgViewer(
-                            "assets/icon/redo.svg",
-                            width: 22,
-                            height: 22,
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ]),
-        ),
-        const SizedBox(height: 10),
-        Container(
-            width: double.infinity, height: 1, color: const Color(0xFF394047)),
-        SizedBox(
-          height: 500,
-          child: Candlesticks(
-            candles: data,
-            actions: [
-              ToolBarAction(
-                width: 110,
-                onPressed: () {},
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 3,
-                    horizontal: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: secondaryColor,
-                  ),
-                  child: const CustomText("Trading view"),
-                ),
+                    ),
+                    child: const Row(
+                      children: [
+                        SvgViewer(
+                          "assets/icon/undo.svg",
+                          width: 22,
+                          height: 22,
+                        ),
+                        SizedBox(width: 10),
+                        SvgViewer(
+                          "assets/icon/redo.svg",
+                          width: 22,
+                          height: 22,
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
-              ToolBarAction(
-                  width: 60,
-                  onPressed: () {},
-                  child: const CustomText("Depth")),
-              ToolBarAction(
-                  child: const SvgViewer("assets/icon/expand.svg"),
-                  onPressed: () {})
-            ],
-          ),
-        )
-      ]),
-    );
+            ]),
+      ),
+      const SizedBox(height: 10),
+      Container(
+          width: double.infinity, height: 1, color: const Color(0xFF394047)),
+      SizedBox(
+        height: 500,
+        child: Candlesticks(
+          candles: data,
+          actions: [
+            ToolBarAction(
+              width: 110,
+              onPressed: () {},
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 3,
+                  horizontal: 10,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: secondaryColor,
+                ),
+                child: const CustomText("Trading view"),
+              ),
+            ),
+            ToolBarAction(
+                width: 60, onPressed: () {}, child: const CustomText("Depth")),
+            ToolBarAction(
+                child: const SvgViewer("assets/icon/expand.svg"),
+                onPressed: () {})
+          ],
+        ),
+      )
+    ]);
   }
 
   Candle parseCandlestickData(String data) {
     Map<String, dynamic> json = jsonDecode(data);
-    List<dynamic> result = json['result'];
+    int timestamp = json['k']['t'];
+    double open = double.parse(json['k']['o']);
+    double high = double.parse(json['k']['h']);
+    double low = double.parse(json['k']['l']);
+    double close = double.parse(json['k']['c']);
+    double volume = double.parse(json['k']['v']);
 
-    if (result.isNotEmpty) {
-      List<dynamic> klineData = result[0];
+    Candle candle = Candle(
+      open: open,
+      high: high,
+      low: low,
+      close: close,
+      volume: volume,
+      date: DateTime.fromMillisecondsSinceEpoch(timestamp),
+    );
 
-      if (klineData.length >= 11) {
-        int timestamp = klineData[0];
-        double open = double.parse(klineData[1]);
-        double high = double.parse(klineData[2]);
-        double low = double.parse(klineData[3]);
-        double close = double.parse(klineData[4]);
-        double volume = double.parse(klineData[5]);
-
-        Candle candle = Candle(
-          open: open,
-          high: high,
-          low: low,
-          close: close,
-          volume: volume,
-          date: DateTime.fromMillisecondsSinceEpoch(timestamp),
-        );
-
-        return candle;
-      } else {
-        throw const FormatException('Invalid kline data');
-      }
-    } else {
-      throw const FormatException('Empty result array');
-    }
+    return candle;
   }
 }
