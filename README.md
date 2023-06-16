@@ -47,4 +47,4 @@ Please make sure you have the appropriate versions of Dart and Flutter installed
 
 ## Video Demo
 
-[![Video Demo](https://user-images.githubusercontent.com/32621169/246443245-17e96870-f1ce-4472-a63f-3eee2d2a8f4b.jpg)]([https://youtu.be/lr4EC0G3IRI](https://youtu.be/rk7Ww7nb0H4))
+[![Video Demo](https://user-images.githubusercontent.com/32621169/246443245-17e96870-f1ce-4472-a63f-3eee2d2a8f4b.jpg)](https://youtu.be/rk7Ww7nb0H4)
